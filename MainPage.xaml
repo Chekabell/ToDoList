@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ToDoList"
+             x:Class="ToDoList.MainPage">
+
+    <ContentPage.BindingContext>
+        <local:ToDoListViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            
+            <Label
+                Padding="30,0"
+                Text="Todolist"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Entry Placeholder="Add task..." Text="{Binding NewText}" />
+            <Button Text="Add Task" Command="{Binding AddItemCommand}" />
+
+            <ListView ItemsSource="{Binding ItemList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+
+                                <CheckBox 
+                                    CheckedChanged="OnDoneChanged"
+                                    IsChecked="{Binding IsComplete}" />
+
+                                <Label  Text="{Binding Text}"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="StartAndExpand">
+
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsComplete}"
+                                                 Value="True">
+                                            <Setter Property="TextDecorations" Value="Strikethrough" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+
+                                </Label>
+
+                                <Button Text="Edit" Margin="10, 0"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:ToDoListViewModel}}, Path=EditItemCommand}"
+                                        CommandParameter="{Binding .}" />
+                                
+                                <Button Text="Delete"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:ToDoListViewModel}}, Path=DeleteItemCommand}"
+                                        CommandParameter="{Binding .}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
