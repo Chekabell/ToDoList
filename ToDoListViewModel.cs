@@ -9,9 +9,9 @@ namespace ToDoList;
 
 public class ToDoListViewModel : INotifyPropertyChanged
 {
-    private string _newText;
-
-    public ObservableCollection<ToDoItemViewModel> ItemList { get; }
+    private string _newText = "";
+    private ObservableCollection<ToDoItemViewModel> _itemList;
+    public ObservableCollection<ToDoItemViewModel> ItemList => _itemList;
 
     public string NewText
     {
@@ -30,7 +30,7 @@ public class ToDoListViewModel : INotifyPropertyChanged
 
     public ToDoListViewModel()
     {
-        ItemList = LoadToDoList();
+        _itemList = LoadToDoList();
 
         AddItemCommand = new Command(() =>
         {
@@ -38,7 +38,7 @@ public class ToDoListViewModel : INotifyPropertyChanged
                 return;
             ItemList.Add(new ToDoItemViewModel(NewText));
             SaveToDoList();
-        });
+        }, () => !string.IsNullOrWhiteSpace(NewText));
         
         DeleteItemCommand = new Command<ToDoItemViewModel>(item =>
         {
@@ -87,5 +87,6 @@ public class ToDoListViewModel : INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        ((Command)AddItemCommand).ChangeCanExecute();
     }
 }

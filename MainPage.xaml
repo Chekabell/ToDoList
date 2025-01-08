@@ -29,7 +29,7 @@
                             <StackLayout Orientation="Horizontal" Padding="10">
 
                                 <CheckBox 
-                                    CheckedChanged="OnDoneChanged"
+                                    CheckedChanged="OnCompleteChanged"
                                     IsChecked="{Binding IsComplete}" />
 
                                 <Label  Text="{Binding Text}"

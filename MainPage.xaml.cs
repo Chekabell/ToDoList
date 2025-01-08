@@ -6,7 +6,7 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
     }
-    private void OnDoneChanged(object sender, CheckedChangedEventArgs e)
+    private void OnCompleteChanged(object sender, CheckedChangedEventArgs e)
     {
         if (sender is CheckBox { BindingContext: ToDoItemViewModel })
         {
